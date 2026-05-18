@@ -10,11 +10,11 @@ class DependencyEmbeddingStrategies(Enum):
 
     Attributes:
         CONDA: Use binaries from Conda.
-        SINGULARITY: Use Singularity containers.
+        APPTAINER: Use Apptainer containers.
     """
 
     CONDA = "CONDA"
-    SINGULARITY = "SINGULARITY"
+    APPTAINER = "APPTAINER"
 
 
 class ExecModes(Enum):

@@ -9,7 +9,7 @@
 [kallisto]: <https://github.com/pachterlab/kallisto>
 [mamba]: <https://github.com/mamba-org/mamba>
 [salmon]: <https://github.com/COMBINE-lab/salmon>
-[singularity]: <https://sylabs.io/singularity/>
+[apptainer]: <https://apptainer.org/>
 [snakemake]: <https://github.com/snakemake/snakemake>
 [snakemake-profiles]: <https://snakemake.readthedocs.io/en/stable/executing/cli.html#profiles>
 [sra]: <https://www.ncbi.nlm.nih.gov/sra>

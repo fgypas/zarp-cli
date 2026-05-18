@@ -17,7 +17,7 @@ jobs:
       - name: set up Conda/Mamba
         uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: "3.10"
+          python-version: "3.11"
           mamba-version: "*"
           auto-update-conda: true
           activate-environment: zarp-cli
@@ -46,7 +46,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ '3.9', '3.10' ]
+        python-version: [ '3.11' ]
     name: unit-testing-Python-${{ matrix.python-version }}
 
     steps:
@@ -88,7 +88,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ '3.9', '3.10' ]
+        python-version: [ '3.11' ]
     name: integration-testing-Python-${{ matrix.python-version }}
 
     steps:
