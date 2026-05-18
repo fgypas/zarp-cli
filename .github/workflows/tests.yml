@@ -12,13 +12,15 @@ jobs:
 
     steps:
       - name: check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: set up Conda/Mamba
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v3
         with:
           python-version: "3.11"
-          mamba-version: "*"
+          miniforge-version: latest
+          conda-remove-defaults: true
+          channel-priority: strict
           auto-update-conda: true
           activate-environment: zarp-cli
           environment-file: install/environment.dev.yml
@@ -51,13 +53,15 @@ jobs:
 
     steps:
       - name: check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: set up Conda/Mamba
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v3
         with:
           python-version: ${{ matrix.python-version }}
-          mamba-version: "*"
+          miniforge-version: latest
+          conda-remove-defaults: true
+          channel-priority: strict
           auto-update-conda: true
           activate-environment: zarp-cli
           environment-file: install/environment.dev.root.yml
@@ -93,13 +97,15 @@ jobs:
 
     steps:
       - name: check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: set up Conda/Mamba
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v3
         with:
           python-version: ${{ matrix.python-version }}
-          mamba-version: "*"
+          miniforge-version: latest
+          conda-remove-defaults: true
+          channel-priority: strict
           auto-update-conda: true
           activate-environment: zarp-cli
           environment-file: install/environment.dev.root.yml
