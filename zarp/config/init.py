@@ -7,6 +7,7 @@ A replacement will be provided in the package ``:mod:zarp``.
 
 from enum import Enum
 from json import JSONDecodeError
+import json
 import logging
 from os.path import expandvars
 from pathlib import Path
@@ -89,12 +90,12 @@ having entered a value. Make sure to enter only _one_ value per query.
 
 """
         )
-        schema_full = jsonref.loads(InitConfig.schema_json())
+        schema_full = jsonref.loads(json.dumps(InitConfig.model_json_schema()))
         for config_group in schema_full["properties"]:  # type: ignore
             for param, default in getattr(self.config, config_group):
                 schema = schema_full["properties"][  # type: ignore
                     config_group
-                ]["allOf"][0]["properties"][
+                ]["properties"][
                     param
                 ]  # type: ignore
                 choices: List = []
@@ -229,17 +230,28 @@ having entered a value. Make sure to enter only _one_ value per query.
         _type: Optional[str] = None
         _class: Optional[Type[Enum]] = None
         _type_item: Optional[str] = None
+        # pydantic v2 represents Optional[X] as anyOf: [{X}, {type: null}]
+        effective_schema = schema
+        if "anyOf" in schema:
+            for item in schema["anyOf"]:
+                if item.get("type") != "null":
+                    effective_schema = item
+                    break
         # basic types
         try:
-            _type = schema["format"]
+            _type = effective_schema["format"]
         except KeyError:
             try:
-                _type = schema["type"]
+                _type = effective_schema["type"]
             except KeyError:
                 pass
-        # referenced types
+        # referenced types (pydantic v2 inlines enum values directly)
+        if "enum" in effective_schema:
+            _type = "enum"
+            _class = getattr(enums, effective_schema["title"])
+        # pydantic v1 compat: enum via allOf
         try:
-            ref_props = schema["allOf"][0]
+            ref_props = effective_schema["allOf"][0]
             if "enum" in list(ref_props):
                 _type = "enum"
                 _class = getattr(enums, ref_props["title"])

@@ -38,12 +38,12 @@ class TestZarp:
     def test_set_up_run_env(self, tmpdir):
         """Test setting up run environment."""
         config = self.config.copy(deep=True)
-        config.run.working_directory = tmpdir
+        config.run.working_directory = Path(tmpdir)
         zarp = ZARP(config=config)
         zarp.set_up_run()
         assert hasattr(zarp, "config")
         assert isinstance(zarp.config, Config)
-        assert zarp.config.run.working_directory == tmpdir
+        assert zarp.config.run.working_directory == Path(tmpdir)
 
     def test_set_up_run_genome_assemblies_map_file_not_exists(self, tmpdir):
         """Test setting up run environment.
@@ -51,8 +51,8 @@ class TestZarp:
         Genome assemblies map file does not exist at specified location.
         """
         config = self.config.copy(deep=True)
-        config.run.working_directory = tmpdir
-        config.run.genome_assemblies_map = tmpdir / "genome_assemblies.csv"
+        config.run.working_directory = Path(tmpdir)
+        config.run.genome_assemblies_map = Path(tmpdir) / "genome_assemblies.csv"
         zarp = ZARP(config=config)
         with pytest.raises(FileNotFoundError):
             zarp.set_up_run()
@@ -61,7 +61,7 @@ class TestZarp:
         """Test setting up run environment when run identifier is set."""
         identifier = "ABCDE"
         config = self.config.copy(deep=True)
-        config.run.working_directory = tmpdir
+        config.run.working_directory = Path(tmpdir)
         config.run.identifier = identifier
         zarp = ZARP(config=config)
         zarp.set_up_run()
@@ -72,7 +72,7 @@ class TestZarp:
     def test_set_up_run_dry_run(self, tmpdir):
         """Test setting up run environment for dry run."""
         config = self.config.copy(deep=True)
-        config.run.working_directory = tmpdir
+        config.run.working_directory = Path(tmpdir)
         config.run.execution_mode = ExecModes.DRY_RUN
         zarp = ZARP(config=config)
         zarp.set_up_run()
@@ -88,13 +88,13 @@ class TestZarp:
         config.ref = [str(Path(__file__).parent / "files" / "empty")]
         zarp = ZARP(config=config)
         zarp.set_up_run()
-        monkeypatch.setattr("pathlib.Path.cwd", lambda: tmpdir)
+        monkeypatch.setattr("pathlib.Path.cwd", lambda: Path(tmpdir))
         zarp.process_samples()
 
     def test_process_samples_seq_archive_id_ref(self, tmpdir):
         """Test processing samples with sequence archive identifier ref."""
         config = self.config.copy(deep=True)
-        config.run.working_directory = tmpdir
+        config.run.working_directory = Path(tmpdir)
         config.run.zarp_directory = Path(__file__).parent / "files" / "zarp"
         config.run.identifier = "test"
         config.ref = ["SRR1234567"]
@@ -105,7 +105,7 @@ class TestZarp:
     def test_process_samples_invalid_ref(self, tmpdir):
         """Test processing samples with invalid ref."""
         config = self.config.copy(deep=True)
-        config.run.working_directory = tmpdir
+        config.run.working_directory = Path(tmpdir)
         config.run.identifier = "test"
         config.ref = ["invalid&name@/path/does/not/exist"]
         zarp = ZARP(config=config)
@@ -114,7 +114,7 @@ class TestZarp:
     def test_execute_run(self, tmpdir):
         """Test run execution."""
         config = self.config.copy(deep=True)
-        config.run.working_directory = tmpdir
+        config.run.working_directory = Path(tmpdir)
         config.run.zarp_directory = Path(__file__).parent / "files" / "zarp"
         config.run.identifier = "test"
         config.ref = ["SRR1234567"]

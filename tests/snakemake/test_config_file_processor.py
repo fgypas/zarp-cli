@@ -21,14 +21,14 @@ class TestConfigFileProcessor:
         """Test constructor."""
         cfp = ConfigFileProcessor()
         assert hasattr(cfp, "content")
-        assert cfp.content.dict() == {}
+        assert cfp.content.model_dump() == {}
 
     def test_set_content(self):
         """Test `set_content()` function."""
-        content = self.content.copy(deep=True)
+        content = self.content.model_copy(deep=True)
         cfp = ConfigFileProcessor()
         assert hasattr(cfp, "content")
-        assert cfp.content == {}
+        assert cfp.content.model_dump() == {}
         cfp.set_content(content=content)
         assert cfp.content == content
 
@@ -40,7 +40,7 @@ class TestConfigFileProcessor:
 
     def test_write_content(self, tmpdir):
         """Test `write()` function with content."""
-        content = self.content.copy(deep=True)
+        content = self.content.model_copy(deep=True)
         cfp = ConfigFileProcessor()
         content = ConfigFileSRA(
             cluster_log_dir="cluster_log_dir",

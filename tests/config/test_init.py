@@ -1,5 +1,6 @@
 """Unit tests for ``:mod:zarp.config.init``."""
 
+import json
 from pathlib import Path
 from typing import (
     Dict,
@@ -10,6 +11,7 @@ from typing import (
 import jsonref
 from pydantic import (
     BaseModel,
+    ConfigDict,
     EmailStr,
 )
 import pytest
@@ -77,7 +79,7 @@ class TestInitializer:
         class InitConfig(BaseModel):
             user: InitUser = InitUser()
 
-        schema: Dict = jsonref.loads(InitConfig().schema_json())
+        schema: Dict = jsonref.loads(json.dumps(InitConfig().model_json_schema()))
         initializer: Initializer = Initializer()
         monkeypatch.setattr("jsonref.loads", lambda *args: schema)
         monkeypatch.setattr("builtins.input", lambda: "new_author")
@@ -94,7 +96,7 @@ class TestInitializer:
         class InitConfig(BaseModel):
             user: InitUser = InitUser()
 
-        schema: Dict = jsonref.loads(InitConfig().schema_json())
+        schema: Dict = jsonref.loads(json.dumps(InitConfig().model_json_schema()))
         initializer: Initializer = Initializer()
         monkeypatch.setattr("jsonref.loads", lambda *args: schema)
         monkeypatch.setattr("builtins.input", lambda: "None")
@@ -117,7 +119,7 @@ class TestInitializer:
                 "DRY_RUN",
             ]
         )
-        schema: Dict = jsonref.loads(InitConfig().schema_json())
+        schema: Dict = jsonref.loads(json.dumps(InitConfig().model_json_schema()))
         initializer: Initializer = Initializer()
         monkeypatch.setattr("jsonref.loads", lambda *args: schema)
         monkeypatch.setattr("builtins.input", mocker)
@@ -140,7 +142,7 @@ class TestInitializer:
                 "$HOME",
             ]
         )
-        schema: Dict = jsonref.loads(InitConfig().schema_json())
+        schema: Dict = jsonref.loads(json.dumps(InitConfig().model_json_schema()))
         initializer: Initializer = Initializer()
         monkeypatch.setattr("jsonref.loads", lambda *args: schema)
         monkeypatch.setattr("builtins.input", mocker)
@@ -163,7 +165,7 @@ class TestInitializer:
                 "4",
             ]
         )
-        schema: Dict = jsonref.loads(InitConfig().schema_json())
+        schema: Dict = jsonref.loads(json.dumps(InitConfig().model_json_schema()))
         initializer: Initializer = Initializer()
         monkeypatch.setattr("jsonref.loads", lambda *args: schema)
         monkeypatch.setattr("builtins.input", mocker)
@@ -186,7 +188,7 @@ class TestInitializer:
                 "3.0",
             ]
         )
-        schema: Dict = jsonref.loads(InitConfig().schema_json())
+        schema: Dict = jsonref.loads(json.dumps(InitConfig().model_json_schema()))
         initializer: Initializer = Initializer()
         monkeypatch.setattr("jsonref.loads", lambda *args: schema)
         monkeypatch.setattr("builtins.input", mocker)
@@ -200,10 +202,8 @@ class TestInitializer:
         """Test method `.set_from_user_input()` with formatted string input."""
 
         class InitUser(BaseModel):
+            model_config = ConfigDict(validate_assignment=True)
             emails: Optional[List[EmailStr]] = None
-
-            class Config:
-                validate_assignment = True
 
         class InitConfig(BaseModel):
             user: InitUser = InitUser()
@@ -216,7 +216,7 @@ class TestInitializer:
                 "",
             ]
         )
-        schema = jsonref.loads(InitConfig().schema_json())
+        schema = jsonref.loads(json.dumps(InitConfig().model_json_schema()))
         initializer: Initializer = Initializer()
         monkeypatch.setattr("jsonref.loads", lambda *args: schema)
         monkeypatch.setattr("builtins.input", mocker)
@@ -261,9 +261,9 @@ class TestInitializer:
         """Test method `._get_param_type()` with basic type."""
         group: str = "run"
         param: str = "cores"
-        schema: Dict = jsonref.loads(InitConfig.schema_json())["properties"][
-            group
-        ]["allOf"][0]["properties"][param]
+        schema: Dict = jsonref.loads(
+            json.dumps(InitConfig.model_json_schema())
+        )["properties"][group]["properties"][param]
         ret = Initializer._get_param_type(schema=schema)
         assert ret[0] == "integer"
         assert ret[1] is None
@@ -273,9 +273,9 @@ class TestInitializer:
         """Test method `._get_param_type()` with formatted string."""
         group: str = "user"
         param: str = "email"
-        schema: Dict = jsonref.loads(InitConfig.schema_json())["properties"][
-            group
-        ]["allOf"][0]["properties"][param]
+        schema: Dict = jsonref.loads(
+            json.dumps(InitConfig.model_json_schema())
+        )["properties"][group]["properties"][param]
         ret = Initializer._get_param_type(schema=schema)
         assert ret[0] == "email"
         assert ret[1] is None
@@ -285,9 +285,9 @@ class TestInitializer:
         """Test method `._get_param_type()` with referenced type."""
         group: str = "run"
         param: str = "execution_mode"
-        schema: Dict = jsonref.loads(InitConfig.schema_json())["properties"][
-            group
-        ]["allOf"][0]["properties"][param]
+        schema: Dict = jsonref.loads(
+            json.dumps(InitConfig.model_json_schema())
+        )["properties"][group]["properties"][param]
         ret = Initializer._get_param_type(schema=schema)
         assert ret[0] == "enum"
         assert ret[1] == ExecModes
