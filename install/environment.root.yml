@@ -12,7 +12,7 @@ dependencies:
   - numpy >=1.24, <3
   - pandas >=2.0, <3
   - pip >=22.1
-  - pydantic >=1.9.2, <2.0.0
+  - pydantic >=2.0, <3
   - pygments >=2.8.0
   - python >=3.11, <3.14
   - rich >=12.5.1

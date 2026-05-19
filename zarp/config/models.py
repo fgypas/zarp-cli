@@ -8,13 +8,14 @@ from typing import (
     Union,
 )
 
-from pydantic import (  # pylint: disable=no-name-in-module
+from pydantic import (
     BaseModel,
+    ConfigDict,
     DirectoryPath,
     EmailStr,
     FilePath,
     HttpUrl,
-    validator,
+    field_validator,
 )
 
 from zarp.config.enums import (
@@ -31,12 +32,11 @@ from zarp.utils import generate_id
 class CustomBaseModel(BaseModel):
     """Base model that all other models derive from."""
 
-    class Config:
-        """Configuration class."""
-
-        use_enum_values = True
-        validate_all = True
-        validate_assignment = True
+    model_config = ConfigDict(
+        use_enum_values=True,
+        validate_default=True,
+        validate_assignment=True,
+    )
 
 
 class InitUser(CustomBaseModel):
@@ -172,8 +172,8 @@ class ConfigRun(InitRun):
     identifier: str = ""
     zarp_directory: DirectoryPath
 
-    # pylint: disable=no-self-argument
-    @validator("identifier")
+    @field_validator("identifier")
+    @classmethod
     def get_identifier(
         cls,
         identifier: str,
