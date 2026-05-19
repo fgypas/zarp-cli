@@ -52,7 +52,9 @@ class TestZarp:
         """
         config = self.config.copy(deep=True)
         config.run.working_directory = Path(tmpdir)
-        config.run.genome_assemblies_map = Path(tmpdir) / "genome_assemblies.csv"
+        config.run.genome_assemblies_map = (
+            Path(tmpdir) / "genome_assemblies.csv"
+        )
         zarp = ZARP(config=config)
         with pytest.raises(FileNotFoundError):
             zarp.set_up_run()

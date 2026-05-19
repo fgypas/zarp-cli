@@ -79,7 +79,9 @@ class TestInitializer:
         class InitConfig(BaseModel):
             user: InitUser = InitUser()
 
-        schema: Dict = jsonref.loads(json.dumps(InitConfig().model_json_schema()))
+        schema: Dict = jsonref.loads(
+            json.dumps(InitConfig().model_json_schema())
+        )
         initializer: Initializer = Initializer()
         monkeypatch.setattr("jsonref.loads", lambda *args: schema)
         monkeypatch.setattr("builtins.input", lambda: "new_author")
@@ -96,7 +98,9 @@ class TestInitializer:
         class InitConfig(BaseModel):
             user: InitUser = InitUser()
 
-        schema: Dict = jsonref.loads(json.dumps(InitConfig().model_json_schema()))
+        schema: Dict = jsonref.loads(
+            json.dumps(InitConfig().model_json_schema())
+        )
         initializer: Initializer = Initializer()
         monkeypatch.setattr("jsonref.loads", lambda *args: schema)
         monkeypatch.setattr("builtins.input", lambda: "None")
@@ -119,7 +123,9 @@ class TestInitializer:
                 "DRY_RUN",
             ]
         )
-        schema: Dict = jsonref.loads(json.dumps(InitConfig().model_json_schema()))
+        schema: Dict = jsonref.loads(
+            json.dumps(InitConfig().model_json_schema())
+        )
         initializer: Initializer = Initializer()
         monkeypatch.setattr("jsonref.loads", lambda *args: schema)
         monkeypatch.setattr("builtins.input", mocker)
@@ -142,7 +148,9 @@ class TestInitializer:
                 "$HOME",
             ]
         )
-        schema: Dict = jsonref.loads(json.dumps(InitConfig().model_json_schema()))
+        schema: Dict = jsonref.loads(
+            json.dumps(InitConfig().model_json_schema())
+        )
         initializer: Initializer = Initializer()
         monkeypatch.setattr("jsonref.loads", lambda *args: schema)
         monkeypatch.setattr("builtins.input", mocker)
@@ -165,7 +173,9 @@ class TestInitializer:
                 "4",
             ]
         )
-        schema: Dict = jsonref.loads(json.dumps(InitConfig().model_json_schema()))
+        schema: Dict = jsonref.loads(
+            json.dumps(InitConfig().model_json_schema())
+        )
         initializer: Initializer = Initializer()
         monkeypatch.setattr("jsonref.loads", lambda *args: schema)
         monkeypatch.setattr("builtins.input", mocker)
@@ -188,7 +198,9 @@ class TestInitializer:
                 "3.0",
             ]
         )
-        schema: Dict = jsonref.loads(json.dumps(InitConfig().model_json_schema()))
+        schema: Dict = jsonref.loads(
+            json.dumps(InitConfig().model_json_schema())
+        )
         initializer: Initializer = Initializer()
         monkeypatch.setattr("jsonref.loads", lambda *args: schema)
         monkeypatch.setattr("builtins.input", mocker)

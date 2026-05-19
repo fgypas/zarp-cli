@@ -40,4 +40,6 @@ class ConfigFileProcessor:
         """
         LOGGER.debug(f"Writing configuration file to '{path}'...")
         with open(path, "w", encoding="utf-8") as _file:
-            yaml.dump(self.content.model_dump(exclude_none=exclude_none), _file)
+            yaml.dump(
+                self.content.model_dump(exclude_none=exclude_none), _file
+            )

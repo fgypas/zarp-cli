@@ -126,7 +126,9 @@ class TestSnakemakeExecutor:
         snakefile = create_snakefile(dir=Path(tmpdir))
         run_config = default_run_config.copy(deep=True)
         run_config.working_directory = Path(tmpdir)
-        my_run = SnakemakeExecutor(run_config=run_config, exec_dir=Path(tmpdir))
+        my_run = SnakemakeExecutor(
+            run_config=run_config, exec_dir=Path(tmpdir)
+        )
         create_input_file(dir=my_run.exec_dir)
         cmd = my_run.compile_command(snakefile=snakefile)
         my_run.run(cmd=cmd)
@@ -140,7 +142,9 @@ class TestSnakemakeExecutor:
         run_config = default_run_config.copy(deep=True)
         run_config.working_directory = Path(tmpdir)
         run_config.execution_mode = ExecModes.DRY_RUN
-        my_run = SnakemakeExecutor(run_config=run_config, exec_dir=Path(tmpdir))
+        my_run = SnakemakeExecutor(
+            run_config=run_config, exec_dir=Path(tmpdir)
+        )
         create_input_file(dir=my_run.exec_dir)
         cmd = my_run.compile_command(snakefile=snakefile)
         my_run.run(cmd=cmd)
@@ -152,7 +156,9 @@ class TestSnakemakeExecutor:
         os.chdir(tmpdir)
         run_config = default_run_config.copy(deep=True)
         run_config.working_directory = Path(tmpdir)
-        my_run = SnakemakeExecutor(run_config=run_config, exec_dir=Path(tmpdir))
+        my_run = SnakemakeExecutor(
+            run_config=run_config, exec_dir=Path(tmpdir)
+        )
         cmd = my_run.compile_command(snakefile=Path("not_a_snakefile"))
         with pytest.raises(subprocess.CalledProcessError):
             my_run.run(cmd=cmd)
